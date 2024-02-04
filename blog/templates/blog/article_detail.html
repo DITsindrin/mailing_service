@@ -1,0 +1,22 @@
+{% extends 'mailing/base.html'%}
+{% block content %}
+<p class="col-12">
+    <img class="bd-placeholder-img mr-2 rounded" width="1152" height="512" src="/media/{{ object.preview }}">
+</p>
+<div class="col-12">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h2 class="my-0 font-weight-normal text-center">Описание</h2>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title text-center"></h1>
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li class="text-start">{{ object.content|safe }}</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            Просмотры: {{ object.views_count }}
+        </div>
+    </div>
+</div>
+{% endblock %}

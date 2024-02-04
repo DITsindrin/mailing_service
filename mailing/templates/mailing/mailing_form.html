@@ -1,0 +1,43 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<form method="post" action="" class="row" enctype="multipart/form-data">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                {% if object %}
+                    Изменение продукта
+                {% else %}
+                    Создание продукта
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                Сообщение
+            </div>
+            <div class="card-body">
+                {{ formset.management_form }}
+                {% for form in formset.forms %}
+                    {{ form.as_p }}
+                    {% if not forloop.last %}
+                <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-outline-success">
+                {% if object %}
+                    Изменить
+                {% else %}
+                    Создать
+                {% endif %}
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}

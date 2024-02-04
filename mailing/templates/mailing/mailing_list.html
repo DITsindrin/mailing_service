@@ -1,0 +1,54 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+{% for object in page_obj %}
+<div class="blog col-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header text-center">
+            <h4 class="my-0 font-weight-normal">Рассылка - {{ object.title }}</h4>
+        </div>
+        <div class="card-body text-center">
+            <h1 class="card-title pricing-card-title"></h1>
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>Время начала - {{ object.start_time }}</li>
+                <li>Время окончания - {{ object.end_time }}</li>
+                <li>Переодичность - {{ object.mailing_periodicity }}</li>
+                <li>Статус - {{ object.mailing_status }}</li>
+                <hr>
+                {% for message in  object.message_set.all %}
+                <li>Тема сообщения - {{ message.letter_subject }}</li>
+                {% endfor %}
+                <hr>
+                <li>Автор - {{ object.user.email }}</li>
+            </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'mailing:mailing-detail' object.id %}" type="button" class="btn-lg btn-outline-info">Подробнее</a>
+                    <a href="{% url 'mailing:mailing-edit' object.id %}" type="button" class="btn-lg btn-outline-secondary">Изменить</a>
+                    <a href="{% url 'mailing:mailing-delete' object.id %}" type="button" class="btn-lg btn-outline-danger">Удалить</a>
+                    {% if object.is_active %}
+                        <a class="btn btn-warningf" href="{% url 'mailing:mailing-disable' object.id %}">Деактивировать</a>
+                    {% else %}
+                        <a class="btn btn-success" href="{% url 'mailing:mailing-disable' object.id %}">Активировать</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'mailing:mailing-detail' object.id %}" type="button" class="btn-lg btn-outline-info">Подробнее</a>
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

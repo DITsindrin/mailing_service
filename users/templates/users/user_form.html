@@ -1,0 +1,24 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<form method="post" action="" class="row" enctype="multipart/form-data">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                Редактирование профиля
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-outline-success">
+                Сохранить
+            </button>
+            <div class="card-footer">
+                <a href="{% url 'users:generate_new_password' %}">
+                    Восстановление пароля
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

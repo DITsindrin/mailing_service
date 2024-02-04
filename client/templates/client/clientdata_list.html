@@ -1,0 +1,46 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+{% for object in page_obj %}
+<div class="col-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h2 class="my-0 font-weight-normal text-center">Информация о клиенте</h2>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title pricing-card-title text-center">{{ object.full_name }}</h3>
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li class="text-start">Почта - {{ object.email}}</li>
+                <li class="text-start">Комментарий - {{ object.comment }}</li>
+                <li class="text-start">Пользователь - {{ object.user }}</li>
+            </ul>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'client:client-detail' object.id %}" type="button" class="btn-lg btn-outline-info">Подробнее</a>
+                    {% if perms.blog.change_article %}
+                        <a href="{% url 'client:client-edit' object.id %}" type="button" class="btn-lg btn-outline-secondary">Изменить</a>
+                    {% endif %}
+                    {% if perms.blog.delete_article %}
+                        <a href="{% url 'client:client-delete' object.id %}" type="button" class="btn-lg btn-outline-secondary">Удалить</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'client:client-detail' object.id %}" type="button" class="btn-lg btn-outline-secondary">Подробнее</a>
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

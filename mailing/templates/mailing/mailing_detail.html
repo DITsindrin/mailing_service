@@ -1,0 +1,30 @@
+{% extends 'mailing/base.html'%}
+{% block content %}
+<div class="col-12">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h2 class="my-0 font-weight-normal text-center">Рассылка {{ object.title }}</h2>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title text-center"></h1>
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>Время начала - {{ object.start_time }}</li>
+                <li>Время окончания - {{ object.end_time }}</li>
+                <li>Переодичность - {{ object.mailing_periodicity }}</li>
+                <li>Статус - {{ object.mailing_status }}</li>
+                <hr>
+                {% for message in  object.message_set.all %}
+                <li>Тема сообщения - {{ message.letter_subject }}</li>
+                <li>Текст сообщения - {{ message.letter_subject }}</li>
+                {% endfor %}
+                <hr>
+                {% for client in object.client.all %}
+                <li>Клиенты - {{ client.full_name }} ({{ client.email}})</li>
+                {% endfor %}
+                <hr>
+                <li>Автор - {{ object.user.email }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
